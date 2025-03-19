@@ -1,0 +1,27 @@
+name: Render PlantUML Diagrams
+
+on:
+  push:
+    paths:
+      - '**.puml'
+
+permissions:
+  contents: write 
+
+jobs:
+  render_diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Render PlantUML diagrams
+        uses: Timmy/plantuml-action@v1
+        with:
+          args: -v -tsvg diagrams/*.puml
+
+      - name: Commit generated diagrams
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Auto-generate PlantUML diagrams'
+          add: 'diagrams/*.svg'
