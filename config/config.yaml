@@ -1,0 +1,116 @@
+board_front:
+  device_name: "/dev/board_front"
+  baudrate: 1000000
+
+board_back:
+  device_name: "/dev/board_back"
+  baudrate: 1000000
+
+joints:
+  - name: "front_left_knee"
+    servo_id: 1
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 3869
+    min_steps: 1237
+    inverted: false
+
+  - name: "front_left_shoulder"
+    servo_id: 2
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 4095
+    min_steps: 0
+    inverted: false
+
+  - name: "front_left_hip"
+    servo_id: 3
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 3230
+    min_steps: 1242
+    inverted: false
+    
+  - name: "front_right_hip"
+    servo_id: 4
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 2881
+    min_steps: 954
+    inverted: false
+
+  - name: "front_right_shoulder"
+    servo_id: 5
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 4095
+    min_steps: 0
+    inverted: false
+
+  - name: "front_right_knee"
+    servo_id: 6
+    board: "front"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 2612
+    min_steps: 331
+    inverted: false
+
+  - name: "back_left_knee"
+    servo_id: 7
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 3964
+    min_steps: 1539
+    inverted: false
+
+  - name: "back_left_shoulder"
+    servo_id: 8
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 4095
+    min_steps: 0
+    inverted: false
+
+  - name: "back_left_hip"
+    servo_id: 9
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 2842
+    min_steps: 847
+    inverted: false
+
+  - name: "back_right_hip"
+    servo_id: 10
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 3161
+    min_steps: 1287
+    inverted: false
+
+  - name: "back_right_shoulder"
+    servo_id: 11
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 4095
+    min_steps: 0
+    inverted: false
+
+  - name: "back_right_knee"
+    servo_id: 12
+    board: "back"
+    max_acc: 50
+    max_vel: 2400
+    max_steps: 2598
+    min_steps: 333
+    inverted: false
