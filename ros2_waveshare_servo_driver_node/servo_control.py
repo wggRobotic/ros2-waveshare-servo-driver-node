@@ -1,15 +1,15 @@
 import math
-from STservo_sdk import *  # Uses STServo SDK library
-#from idefix.robot_constants import *
-
-#from idefix.utilities import map_value
+from ros2_waveshare_servo_driver_node.STservo_sdk import *  # Uses STServo SDK library
 
 
 class ServoControl:
-    def __init__(self):
+    def __init__(self, config):
         # Initialize PortHandler instances
-        self.port_handler_front = PortHandler(DEVICE_NAME_FRONT)
-        self.port_handler_back = PortHandler(DEVICE_NAME_BACK)
+        self.config = config
+        board_front = config['board_front']
+        board_back = config['board_back']
+        self.port_handler_front = PortHandler(board_front['device_name'])
+        self.port_handler_back = PortHandler(board_back['device_name'])
 
         # Initialize PacketHandler instances
         self.packetHandlerFront = sts(self.port_handler_front)
@@ -27,12 +27,12 @@ class ServoControl:
             print("Failed to open port back")
 
         # Set baud rates
-        if self.port_handler_front.setBaudRate(BAUDRATE):
+        if self.port_handler_front.setBaudRate(board_front['baudrate']):
             print("Succeeded to set baud rate front")
         else:
             print("Failed to set baud rate front")
 
-        if self.port_handler_back.setBaudRate(BAUDRATE):
+        if self.port_handler_back.setBaudRate(board_back['baudrate']):
             print("Succeeded to set baud rate back")
         else:
             print("Failed to set baud rate back")
@@ -42,7 +42,7 @@ class ServoControl:
         self.port_handler_back.closePort()
 
     def get_angle(self, id):
-        packetHandler = self.packetHandlerFront if id <= 6 else self.packetHandlerBack
+        packetHandler = self.packetHandlerFront if id <= 6 else self.packetHandlerBack 
         position, result, error = packetHandler.ReadPos(id)
         if result == COMM_SUCCESS:
             print(f"Servo ID {id} Position: {position}")
@@ -51,21 +51,55 @@ class ServoControl:
         else:
             print(f"Error reading position: {packetHandler.getTxRxResult(result)}")
             return None
+        
+    def get_joint_by_name(self, name):
+        return next((joint for joint in self.config['joints'] if joint['name'] == name), None)
 
-    def set_pos(self, id: int, angle: float):
-        packetHandler = self.packetHandlerFront if id <= 6 else self.packetHandlerBack
-        # Map angle to servo position
-        servo_position = int(map_value(angle, 0, math.pi * 2, 0, 4095))
+            
+    def process_msg(self,name,pos,vel,eff):
+        joint = self.get_joint_by_name(name)
+        if joint is None:
+            print(f"Joint {name} not found in config.")
+            return
+
+        id = joint['servo_id']
+        board = joint['board']
+        max_steps = joint['max_steps']
+        min_steps = joint['min_steps']
+        max_vel = joint['max_vel']
+        acc = joint['acc']
+        offset = joint['offset']
+        inverted = joint['inverted']
+        
+        steps = pos/math.pi*2047
+        if inverted:
+            steps = -steps + offset
+        else:
+            steps = steps + offset
+        velocity = vel/math.pi*2047
+        if velocity > max_vel:
+            velocity = max_vel
+            
+
+        # Set position
+        self.set_pos(board,id, int(steps), int(velocity),int(acc),int(min_steps),int(max_steps))
+        
+        
+        if eff == 0:
+            self.enable_torque(id, False)
+
+    def set_pos(self, board, id: int, servo_position: float, velocity: float, acceleration: float, min_steps: int, max_steps:int ):
+        packetHandler = self.packetHandlerFront if board == "front" else self.packetHandlerBack
         # Prevents mechanical damage
-        if servo_position < SERVOS_MIN_VALUE[id - 1]:
-            servo_position = SERVOS_MIN_VALUE[id - 1]
+        if servo_position < min_steps:
+            servo_position = min_steps
             print("limited move from servo:%s" % id)
-        elif servo_position > SERVOS_MAX_VALUE[id - 1]:
-            servo_position = SERVOS_MAX_VALUE[id - 1]
+        elif servo_position > max_steps:
+            servo_position = max_steps
             print("limited move from servo:%s" % id)
         # Set goal position
         sts_comm_result = packetHandler.SyncWritePosEx(
-            id, servo_position, STS_MOVING_SPEED, STS_MOVING_ACC
+            id, servo_position, velocity, acceleration
         )
         if sts_comm_result != True:
             print("[ID:%03d] groupSyncWrite add param failed" % servo_position)
@@ -93,7 +127,6 @@ class ServoControl:
         sts_comm_result, sts_error = packetHandler.write1ByteTxRx(
             id, STS_TORQUE_ENABLE, torque_value
         )
-
         if sts_comm_result != COMM_SUCCESS:
             print(
                 "Failed to change torque state: %s"
@@ -140,3 +173,6 @@ class ServoControl:
     def read_movement(self, id):
         packetHandler = self.packetHandlerFront if id <= 6 else self.packetHandlerBack
         return packetHandler.ReadMoving(id)
+    
+def map_value(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
