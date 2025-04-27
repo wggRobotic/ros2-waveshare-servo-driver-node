@@ -1,22 +1,24 @@
-# Basis: ROS2 Base Image (z.B. basierend auf ros:jazzy)
-FROM ros2-base-image
+# Basis-Image
+FROM ros:jazzy
 
-# Installiere Git
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Installiere Git, rosdep
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
-# Setze das Arbeitsverzeichnis im Container
+# Setze das Arbeitsverzeichnis
 WORKDIR /ros2_ws/src
 
-# Klone das spezifische ROS2 Node Repository
-RUN git clone https://github.com/wggRobotic/ros2-waveshare-servo-driver-node.git
+# Klone das ROS2-Node-Repository
+RUN git clone https://github.com/wggRobotic/ros2_waveshare_servo_driver_node.git
 
-# Wechsel in das übergeordnete Verzeichnis und baue den ROS2 Workspace
+# Installiere ROS-Abhängigkeiten
 WORKDIR /ros2_ws
-RUN . /opt/ros/jazzy/setup.bash && colcon build --symlink-install
+RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y
 
-# Setze die Shell auf bash, um die Setup-Skripte korrekt zu sourcen
+
+# Setze die Shell auf bash
 SHELL ["/bin/bash", "-c"]
 
-# Sourcen der ROS2-Umgebung und Start des gewünschten Nodes
-# TODO: Ersetze <PACKAGE_NAME> und <NODE_EXECUTABLE> durch die entsprechenden Werte des ROS2-Pakets
-CMD "source /opt/ros/jazzy/setup.bash && source install/setup.bash && ros2 run <PACKAGE_NAME> <NODE_EXECUTABLE>"
+# Baue den Workspace
+RUN . /opt/ros/jazzy/setup.bash && colcon build --symlink-install
+
+CMD ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && ros2 run ros2_waveshare_servo_driver_node driver"]
