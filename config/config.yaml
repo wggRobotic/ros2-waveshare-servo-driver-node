@@ -14,8 +14,8 @@ joints:
     max_vel: 2400
     max_steps: 3869
     min_steps: 1237
-    offset: 0
-    inverted: false
+    offset: 2047
+    inverted: True
 
   - name: "front_left_shoulder"
     servo_id: 2
@@ -24,8 +24,8 @@ joints:
     max_vel: 2400
     max_steps: 4095
     min_steps: 0
-    offset: 0
-    inverted: false
+    offset: 1024
+    inverted: True
 
   - name: "front_left_hip"
     servo_id: 3
@@ -34,8 +34,8 @@ joints:
     max_vel: 2400
     max_steps: 3230
     min_steps: 1242
-    offset: 0
-    inverted: false
+    offset: 2047
+    inverted: True
     
   - name: "front_right_hip"
     servo_id: 4
@@ -44,7 +44,7 @@ joints:
     max_vel: 2400
     max_steps: 2881
     min_steps: 954
-    offset: 0
+    offset: 2047
     inverted: false
 
   - name: "front_right_shoulder"
@@ -54,7 +54,7 @@ joints:
     max_vel: 2400
     max_steps: 4095
     min_steps: 0
-    offset: 0
+    offset: 1024
     inverted: false
 
   - name: "front_right_knee"
@@ -64,7 +64,7 @@ joints:
     max_vel: 2400
     max_steps: 2612
     min_steps: 331
-    offset: 0
+    offset: 2047
     inverted: false
 
   - name: "back_left_knee"
@@ -74,8 +74,8 @@ joints:
     max_vel: 2400
     max_steps: 3964
     min_steps: 1539
-    offset: 0
-    inverted: false
+    offset: 2047
+    inverted: True
 
   - name: "back_left_shoulder"
     servo_id: 8
@@ -84,8 +84,8 @@ joints:
     max_vel: 2400
     max_steps: 4095
     min_steps: 0
-    offset: 0
-    inverted: false
+    offset: 1024
+    inverted: True
 
   - name: "back_left_hip"
     servo_id: 9
@@ -94,7 +94,7 @@ joints:
     max_vel: 2400
     max_steps: 2842
     min_steps: 847
-    offset: 0
+    offset: 2047
     inverted: false
 
   - name: "back_right_hip"
@@ -104,8 +104,8 @@ joints:
     max_vel: 2400
     max_steps: 3161
     min_steps: 1287
-    offset: 0
-    inverted: false
+    offset: 2047
+    inverted: True
 
   - name: "back_right_shoulder"
     servo_id: 11
@@ -114,7 +114,7 @@ joints:
     max_vel: 2400
     max_steps: 4095
     min_steps: 0
-    offset: 0
+    offset: 1024
     inverted: false
 
   - name: "back_right_knee"
@@ -124,5 +124,5 @@ joints:
     max_vel: 2400
     max_steps: 2598
     min_steps: 333
-    offset: 0
+    offset: 2047
     inverted: false
