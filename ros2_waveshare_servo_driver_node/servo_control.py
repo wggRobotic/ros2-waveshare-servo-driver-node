@@ -73,9 +73,10 @@ class ServoControl:
         
         steps = pos/math.pi*2047
         if inverted:
-            steps = 4095 - steps -offset
+            steps = (4095 - steps - offset) % 4096
         else:
-            steps = steps + offset
+            steps = (steps + offset) % 4096
+            
         velocity = vel/math.pi*2047
         if velocity > max_vel:
             velocity = max_vel
