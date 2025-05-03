@@ -8,7 +8,7 @@ RUN apt-get update && rm -rf /var/lib/apt/lists/*
 WORKDIR /ros2_ws/src
 
 # Klone das ROS2-Node-Repository
-RUN git clone https://github.com/wggRobotic/ros2_waveshare_servo_driver_node.git
+RUN git clone https://github.com/wggRobotic/ros2-waveshare-servo-driver-node.git
 
 # Installiere ROS-Abhängigkeiten
 WORKDIR /ros2_ws
@@ -21,4 +21,4 @@ SHELL ["/bin/bash", "-c"]
 # Baue den Workspace
 RUN . /opt/ros/jazzy/setup.bash && colcon build --symlink-install
 
-CMD ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && ros2 run ros2_waveshare_servo_driver_node driver"]
+CMD ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && ros2 run waveshare_servo_driver driver"]

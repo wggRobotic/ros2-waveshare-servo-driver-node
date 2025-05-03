@@ -1,5 +1,5 @@
 import math
-from ros2_waveshare_servo_driver_node.STservo_sdk import *  # Uses STServo SDK library
+from waveshare_servo_driver.STservo_sdk import *  # Uses STServo SDK library
 
 
 class ServoControl:

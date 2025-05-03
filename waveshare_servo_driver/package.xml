@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ros2_waveshare_servo_driver_node</name>
+  <name>waveshare_servo_driver</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="wagneraron@outlook.de">corvus</maintainer>
@@ -13,7 +13,6 @@
   <test_depend>python3-pytest</test_depend>
   
   <depend>python3-pyserial</depend>
-  <exec_depend>python3-pyserial</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

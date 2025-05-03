@@ -30,12 +30,12 @@ Dieses Repository enthält den Code für einen ROS2 Node, der die bidirektionale
 
 1. Repository klonen:
    ```bash
-   git clone https://github.com/wggRobotic/ros2_waveshare_servo_driver_node.git
-   cd ros2_waveshare_servo_driver_node
+   git clone https://github.com/wggRobotic/ros2-waveshare-servo_driver_node.git
+   cd ros2-waveshare-servo-driver-node
 2. Docker-Image bauen:
    ```bash
-   docker build -t ros2_waveshare_servo_driver_node .
+   docker build -t ros2-waveshare-servo-driver-node .
 
 3. Container starten:
    ```bash
-   docker run --rm   --network host   --device /dev/board_front   --device /dev/board_back ros2_waveshare_servo_driver_node
+   docker run --rm   --network host   --device /dev/board_front   --device /dev/board_back ros2-waveshare-servo-driver_node

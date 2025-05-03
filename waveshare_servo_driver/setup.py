@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'ros2_waveshare_servo_driver_node'
+package_name = 'waveshare_servo_driver'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'driver = ros2_waveshare_servo_driver_node.node:main',
+            'driver = waveshare_servo_driver.node:main',
         ],
     },
 )

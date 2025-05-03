@@ -5,7 +5,7 @@ import yaml
 import os
 from ament_index_python.packages import get_package_share_directory
 
-from ros2_waveshare_servo_driver_node.servo_control import ServoControl
+from waveshare_servo_driver.servo_control import ServoControl
 
 class JointStateSubscriber(Node):
     def __init__(self,config ):
@@ -33,7 +33,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Get the path to the package's share directory using ROS2
-    package_name = 'ros2_waveshare_servo_driver_node'  # Replace with your actual package name
+    package_name = 'waveshare_servo_driver'  # Replace with your actual package name
     package_share_directory = get_package_share_directory(package_name)
 
     # Construct the path to the config file
@@ -46,19 +46,6 @@ def main(args=None):
     # Open and load the YAML config file
     with open(config_file_path, 'r') as file:
         config = yaml.safe_load(file)
-
-    
-    # Access and print joint settings
-    for joint in config['joints']:
-        print(f"Joint: {joint['name']}")
-        print(f"  Servo ID: {joint['servo_id']}")
-        print(f"  Board: {joint['board']}")
-        print(f"  Max Acc: {joint['acc']}")
-        print(f"  Max Vel: {joint['max_vel']}")
-        print(f"  Max Steps: {joint['max_steps']}")
-        print(f"  Min Steps: {joint['min_steps']}")
-        print(f"  Offset: {joint['offset']}")
-        print(f"  Inverted: {joint['inverted']}")
 
     board_front = config['board_front']
     board_back = config['board_back']
