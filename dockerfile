@@ -4,18 +4,13 @@ FROM ros:jazzy
 # Installiere Git, rosdep
 RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
-# Setze das Arbeitsverzeichnis
 WORKDIR /ros2_ws/src
-
-# Klone das ROS2-Node-Repository
-RUN git clone https://github.com/wggRobotic/ros2-waveshare-servo-driver-node.git
-
-RUN apt-get update && apt-get install -y python3-serial
+COPY ./waveshare_servo_driver ./waveshare_servo_driver
 
 
 # Installiere ROS-Abhängigkeiten
 WORKDIR /ros2_ws
-RUN apt-get update && rosdep update && rosdep install --from-paths src/ros2-waveshare-servo-driver-node/waveshare_servo_driver --ignore-src -r -y
+RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y
 
 
 # Setze die Shell auf bash
