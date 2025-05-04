@@ -52,14 +52,15 @@ class ServoControl:
             print(f"Error reading position: {packetHandler.getTxRxResult(result)}")
             return None
         
-    def get_joint_by_name(self, name):
-        return next((joint for joint in self.config['joints'] if joint['name'] == name), None)
+    def get_joint_by_id(self, id):
+        return next((joint for joint in self.config['joints'] if joint['servo_id'] == id), None)
 
             
-    def process_msg(self,name,pos,vel,eff):
-        joint = self.get_joint_by_name(name)
+    def process_msg(self, leg_index, hip_angle, shoulder_angle, ankle_angle):
+        # TODO: Edit the way the angles are passed
+        joint = self.get_joint_by_id(id)
         if joint is None:
-            print(f"Joint {name} not found in config.")
+            print(f"Joint {servo_id} not found in config.")
             return
 
         id = joint['servo_id']

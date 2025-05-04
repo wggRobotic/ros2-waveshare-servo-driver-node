@@ -1,31 +1,31 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
+from trajectory_msgs.msg import JointTrajectory
 import yaml
 import os
 from ament_index_python.packages import get_package_share_directory
 
 from waveshare_servo_driver.servo_control import ServoControl
 
-class JointStateSubscriber(Node):
+class JointTrajectorySubscriber(Node):
     def __init__(self,config ):
-        super().__init__('joint_state_subscriber')
+        super().__init__('joint_trajectory_subscriber')
         self.subscription = self.create_subscription(
-            JointState,
-            '/joint_states',  # typical topic for joint states
+            JointTrajectory,
+            '/joint_commands',  # typical topic for joint states
             self.listener_callback,
             10
         )
         self.sc = ServoControl(config)
 
-    def listener_callback(self, msg: JointState):
-        self.get_logger().info('--- Joint State ---')
-        for i, name in enumerate(msg.name):
-            pos = msg.position[i] if i < len(msg.position) else 'n/a'
-            vel = msg.velocity[i] if i < len(msg.velocity) else 'n/a'
-            eff = msg.effort[i] if i < len(msg.effort) else 'n/a'
-            self.get_logger().info(f'{name}: pos={pos}, vel={vel}, effort={eff}')
-            self.sc.process_msg(name,pos,vel,eff)
+    def listener_callback(self, msg: JointTrajectory):
+        self.get_logger().info('--- Joint Commands ---')
+        for leg_index, point in enumerate(msg.points):
+            hip_angle, shoulder_angle ,ankle_angle = point.positions
+
+            # self.get_logger().info(f'{i}: pos={pos}, vel={vel}, effort={eff}')
+            self.sc.process_msg(leg_index,hip_angle,shoulder_angle,ankle_angle)
         self.sc.move_positions()
 
 
@@ -51,7 +51,7 @@ def main(args=None):
     board_back = config['board_back']
     
     # Initialize and spin the node
-    node = JointStateSubscriber(config)
+    node = JointTrajectorySubscriber(config)
     
     rclpy.spin(node)
     node.destroy_node()
