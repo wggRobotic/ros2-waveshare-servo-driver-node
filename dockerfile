@@ -1,26 +1,27 @@
+# Basis-Image
 FROM ros:jazzy
 
-# Installiere Abhängigkeiten
-RUN apt-get update && apt-get install -y \
-    git \
-    python3-serial \
- && rm -rf /var/lib/apt/lists/*
+# Installiere Git, rosdep
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
-# Arbeitsverzeichnis setzen
+# Setze das Arbeitsverzeichnis
 WORKDIR /ros2_ws/src
 
-# Repo klonen
+# Klone das ROS2-Node-Repository
 RUN git clone https://github.com/wggRobotic/ros2-waveshare-servo-driver-node.git
 
-# ROS-Abhängigkeiten installieren
-WORKDIR /ros2_ws
-RUN rosdep update && rosdep install --from-paths src/ros2-waveshare-servo-driver-node --ignore-src -r -y
+RUN apt-get update && apt-get install -y python3-serial
 
-# Setze Shell auf bash
+
+# Installiere ROS-Abhängigkeiten
+WORKDIR /ros2_ws
+RUN apt-get update && rosdep update && rosdep install --from-paths src/ros2-waveshare-servo-driver-node/waveshare_servo_driver --ignore-src -r -y
+
+
+# Setze die Shell auf bash
 SHELL ["/bin/bash", "-c"]
 
-# Build Workspace
-RUN source /opt/ros/jazzy/setup.bash && colcon build --symlink-install
+# Baue den Workspace
+RUN . /opt/ros/jazzy/setup.bash && colcon build --symlink-install
 
-# Starte Node
-CMD ["bash", "-c", "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && ros2 run waveshare_servo_driver driver"]
+CMD ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /ros2_ws/install/setup.bash && ros2 run waveshare_servo_driver driver"]
