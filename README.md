@@ -38,4 +38,4 @@ Dieses Repository enthält den Code für einen ROS2 Node, der die bidirektionale
 
 3. Container starten:
    ```bash
-   docker run --rm   --network host   --device /dev/board_front   --device /dev/board_back ros2-waveshare-servo-driver_node
+   docker run --rm   --network host   --device /dev/board_front   --device /dev/board_back ros2-waveshare-servo-driver-node

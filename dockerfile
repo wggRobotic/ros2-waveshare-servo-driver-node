@@ -12,7 +12,7 @@ RUN git clone https://github.com/wggRobotic/ros2-waveshare-servo-driver-node.git
 
 # Installiere ROS-Abhängigkeiten
 WORKDIR /ros2_ws
-RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y
+RUN apt-get update && rosdep update && rosdep install --from-paths src/ros2-waveshare-servo-driver-node/waveshare_servo_driver --ignore-src -r -y
 
 
 # Setze die Shell auf bash
